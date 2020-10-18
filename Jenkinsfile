@@ -1,7 +1,7 @@
 pipeline {
   environment {
     registry = "piyushoswal1989/docker_builds"
-    registryCredentials = "62eaeaf6-4154-47c0-9148-4566558cdbfa"
+    registryCredential = "62eaeaf6-4154-47c0-9148-4566558cdbfa"
     dockerImage = ''
   }
   
@@ -15,19 +15,21 @@ pipeline {
         }
       }
     }
+    
     stage('Push to DockerHub') {
       steps {
-        script  {
-          docker.withRegistry('', registryCredentials )  {
+        script {
+          docker.withRegistry('', registryCredential ) {
             dockerImage.push()
           }
         }
       }
     }
+    
     stage('Test Run') {
       steps {
         sh 'docker run -d $registry:$BUILD_NUMBER'
       }
     }
-  }
-}
+  } 
+} 
